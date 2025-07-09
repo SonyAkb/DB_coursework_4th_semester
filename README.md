@@ -52,6 +52,8 @@ ____
 
 [:arrow_up:Содержание](#Содержание)
 
+____
+
 ## Логическая модель
 
 Логическая модель выполнена в нотации Дж. Мартина («Вороньи лапки»).
@@ -63,6 +65,8 @@ ____
 На схеме логической модели отражены сведения о полях, требуемых для объединения таблиц, а также о ключевых элементах, таких как первичные и внешние ключи. Кроме того, представлены наименования триггеров и представлений.
 
 [:arrow_up:Содержание](#Содержание)
+
+____
 
 ## Физическая модель
 
@@ -76,7 +80,11 @@ ____
 
 [:arrow_up:Содержание](#Содержание)
 
+____
+
 ## Создание базы данных
+
+### Создание таблиц
 
 Создание таблицы Регионы (Region)
 ```MySQL
@@ -85,25 +93,32 @@ CREATE TABLE Region (
     RegionName NVARCHAR(255) NOT NULL
 );
 ```
-Листинг А.2 — Создание таблицы Категории товаров (ProductCategory)
+Создание таблицы Категории товаров (ProductCategory)
+```MySQL
 CREATE TABLE ProductCategory (
     CategoryID INT AUTO_INCREMENT PRIMARY KEY,
     CategoryName NVARCHAR(255) NOT NULL,
     Description LONGTEXT NULL
 );
-Листинг А.3 — Создание таблицы Отделы (Department)
+```
+Создание таблицы Отделы (Department)
+```MySQL
 CREATE TABLE Department (
     DepartmentID INT AUTO_INCREMENT PRIMARY KEY,
     DepartmentName NVARCHAR(255) NOT NULL,
     Description LONGTEXT NULL
 );
-Листинг А.4 — Создание таблицы Должности (JobTitle)
+```
+Создание таблицы Должности (JobTitle)
+```MySQL
 CREATE TABLE JobTitle (
     JobTitleID INT AUTO_INCREMENT PRIMARY KEY,
     JobTitleName NVARCHAR(255) NOT NULL,
     Description LONGTEXT NULL
 );
-Листинг А.5 — Создание таблицы Сотрудники (Employee)
+```
+Создание таблицы Сотрудники (Employee)
+```MySQL
 CREATE TABLE Employee (
     EmployeeID INT AUTO_INCREMENT PRIMARY KEY,
     DepartmentID INT NOT NULL,
@@ -120,7 +135,9 @@ CREATE TABLE Employee (
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
     FOREIGN KEY (JobTitleID) REFERENCES JobTitle(JobTitleID)
 );
-Листинг А.6 — Создание таблицы Склады (Warehouse)
+```
+Создание таблицы Склады (Warehouse)
+```MySQL
 CREATE TABLE Warehouse (
     WarehouseID INT AUTO_INCREMENT PRIMARY KEY,
     RegionID INT NOT NULL,
@@ -133,7 +150,9 @@ CREATE TABLE Warehouse (
     IsActive BIT NOT NULL DEFAULT 1,
     FOREIGN KEY (RegionID) REFERENCES Region(RegionID)
 );
-Листинг А.7 — Создание таблицы Клиенты (Customer)
+```
+Создание таблицы Клиенты (Customer)
+```MySQL
 CREATE TABLE Customer (
     CustomerID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerName NVARCHAR(255) NOT NULL,
@@ -150,9 +169,13 @@ CREATE TABLE Customer (
     CONSTRAINT chk_email CHECK (Email LIKE '%@%.%' OR Email IS NULL),
     FOREIGN KEY (RegionID) REFERENCES Region(RegionID)
 );
-Листинг А.8 — Создание индекса для страны клиента
+```
+Создание индекса для страны клиента
+```MySQL
 CREATE INDEX idx_customer_country ON Customer(Country);
-Листинг А.9 — Создание таблицы Контакты клиентов (Contact)
+```
+Создание таблицы Контакты клиентов (Contact)
+```MySQL
 CREATE TABLE Contact (
     ContactID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerID INT NOT NULL,
@@ -165,7 +188,9 @@ CREATE TABLE Contact (
     FaxNumber VARCHAR(255) NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
-Листинг А.10 — Создание таблицы Юридические реквизиты (LegalDetails)
+```
+Создание таблицы Юридические реквизиты (LegalDetails)
+```MySQL
 CREATE TABLE LegalDetails (
     LegalID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerID INT NOT NULL,
@@ -177,7 +202,9 @@ CREATE TABLE LegalDetails (
     CEOPosition NVARCHAR(255) NOT NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
-Листинг А.11 — Создание таблицы Банковские реквизиты (BankAccount)
+```
+Создание таблицы Банковские реквизиты (BankAccount)
+```MySQL
 CREATE TABLE BankAccount (
     AccountID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerID INT NOT NULL,
@@ -187,7 +214,9 @@ CREATE TABLE BankAccount (
     BIC VARCHAR(20) NOT NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
-Листинг А.12 — Создание таблицы Товары (Product)
+```
+Создание таблицы Товары (Product)
+```MySQL
 CREATE TABLE Product (
     ProductID INT AUTO_INCREMENT PRIMARY KEY,
     CategoryID INT NOT NULL,
@@ -201,10 +230,14 @@ CREATE TABLE Product (
     CONSTRAINT chk_min_stock CHECK (MinimumStockLevel >= 0),
     FOREIGN KEY (CategoryID) REFERENCES ProductCategory(CategoryID)
 );
-Листинг А.13 — Создание индексов для товаров
+```
+Создание индексов для товаров
+```MySQL
 CREATE INDEX idx_product_price ON Product(Price);
 CREATE INDEX idx_product_min_stock ON Product(MinimumStockLevel);
-Листинг А.14 — Создание таблицы Подробная информация о товаре (ProductDetail)
+```
+Создание таблицы Подробная информация о товаре (ProductDetail)
+```MySQL
 CREATE TABLE ProductDetail (
     DetailID INT AUTO_INCREMENT PRIMARY KEY,
     ProductID INT NOT NULL,
@@ -215,13 +248,16 @@ CREATE TABLE ProductDetail (
     CONSTRAINT chk_weight CHECK (Weight > 0 OR Weight IS NULL),
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
 );
-
-Листинг А.15 — Создание таблицы Статусы заказов (OrderStatus)
+```
+Создание таблицы Статусы заказов (OrderStatus)
+```MySQL
 CREATE TABLE OrderStatus (
     StatusID INT AUTO_INCREMENT PRIMARY KEY,
     StatusName NVARCHAR(50) NOT NULL
 );
-Листинг А.16 — Создание таблицы Заказы (Ordering)
+```
+Создание таблицы Заказы (Ordering)
+```MySQL
 CREATE TABLE Ordering (
     OrderID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerID INT NOT NULL,
@@ -238,10 +274,14 @@ CREATE TABLE Ordering (
     FOREIGN KEY (StatusID) REFERENCES OrderStatus(StatusID),
     FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
 );
-Листинг А.17 — Создание индексов для заказов
+```
+Создание индексов для заказов
+```MySQL
 CREATE INDEX idx_ordering_date ON Ordering(OrderDate);
 CREATE INDEX idx_ordering_total ON Ordering(TotalAmount);
-Листинг А.18 — Создание таблицы Товары в заказе (OrderItem)
+```
+Создание таблицы Товары в заказе (OrderItem)
+```MySQL
 CREATE TABLE OrderItem (
     OrderID INT NOT NULL,
     ProductID INT NOT NULL,
@@ -253,9 +293,13 @@ CREATE TABLE OrderItem (
     FOREIGN KEY (OrderID) REFERENCES Ordering(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
 );
-Листинг А.19 — Создание индекса для количества товаров в заказе
+```
+Создание индекса для количества товаров в заказе
+```MySQL
 CREATE INDEX idx_order_item_quantity ON OrderItem(Quantity);
-Листинг А.20 — Создание таблицы Запасы (Inventory)
+```
+Создание таблицы Запасы (Inventory)
+```MySQL
 CREATE TABLE Inventory (
     WarehouseID INT NOT NULL,
     ProductID INT NOT NULL,
@@ -267,18 +311,23 @@ CREATE TABLE Inventory (
     FOREIGN KEY (WarehouseID) REFERENCES Warehouse(WarehouseID),
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
 );
-Листинг А.21 — Создание таблицы Методы оплаты (PaymentMethod)
+```
+Создание таблицы Методы оплаты (PaymentMethod)
+```MySQL
 CREATE TABLE PaymentMethod (
     PaymentMethodID INT AUTO_INCREMENT PRIMARY KEY,
     PaymentMethodName NVARCHAR(255) NOT NULL
 );
-Листинг А.22 — Создание таблицы Статусы оплаты (PaymentStatus)
+```
+Создание таблицы Статусы оплаты (PaymentStatus)
+```MySQL
 CREATE TABLE PaymentStatus (
     StatusID INT AUTO_INCREMENT PRIMARY KEY,
     StatusName NVARCHAR(50) NOT NULL
 );
-Листинг А.23 — Создание таблицы Счета (Invoice)
-Листинг А. Создаем таблицу Invoice с DEFAULT значением для InvoiceStatusID
+```
+Создание таблицы Счета (Invoice)
+```MySQL
 CREATE TABLE Invoice (
     InvoiceID INT AUTO_INCREMENT PRIMARY KEY,
     OrderID INT NOT NULL,
@@ -289,9 +338,13 @@ CREATE TABLE Invoice (
     FOREIGN KEY (OrderID) REFERENCES Ordering(OrderID),
     FOREIGN KEY (InvoiceStatusID) REFERENCES PaymentStatus(StatusID)
 );
-Листинг А.24 — Создание индекса для даты оплаты счета
+```
+Создание индекса для даты оплаты счета
+```MySQL
 CREATE INDEX idx_invoice_due_date ON Invoice(DueDate);
-Листинг А.25 — Создание таблицы Платежи (Payment)
+```
+Создание таблицы Платежи (Payment)
+```MySQL
 CREATE TABLE Payment (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,
     OrderID INT NOT NULL,
@@ -302,9 +355,13 @@ CREATE TABLE Payment (
     FOREIGN KEY (OrderID) REFERENCES Ordering(OrderID),
     FOREIGN KEY (PaymentMethodID) REFERENCES PaymentMethod(PaymentMethodID)
 );
-Листинг А.26 — Создание индекса для даты платежа
+```
+Создание индекса для даты платежа
+```MySQL
 CREATE INDEX idx_payment_date ON Payment(PaymentDate);
-Листинг А.27 — Создание таблицы Отгрузки (Shipment)
+```
+Создание таблицы Отгрузки (Shipment)
+```MySQL
 CREATE TABLE Shipment (
     ShipmentID INT AUTO_INCREMENT PRIMARY KEY,
     OrderID INT NOT NULL,
@@ -315,12 +372,16 @@ CREATE TABLE Shipment (
     FOREIGN KEY (OrderID) REFERENCES Ordering(OrderID),
     FOREIGN KEY (WarehouseID) REFERENCES Warehouse(WarehouseID)
 );
-Листинг А.28 — Создание таблицы Типы документов (DocumentType)
+```
+Создание таблицы Типы документов (DocumentType)
+```MySQL
 CREATE TABLE DocumentType (
     DocumentTypeID INT AUTO_INCREMENT PRIMARY KEY,
     DocumentTypeName NVARCHAR(255) NOT NULL
 );
-Листинг А.29 — Создание таблицы Документы по заказам (OrderDocument)
+```
+Создание таблицы Документы по заказам (OrderDocument)
+```MySQL
 CREATE TABLE OrderDocument (
     OrderDocumentID INT AUTO_INCREMENT PRIMARY KEY,
     OrderID INT NOT NULL,
@@ -329,4 +390,533 @@ CREATE TABLE OrderDocument (
     FOREIGN KEY (OrderID) REFERENCES Ordering(OrderID),
     FOREIGN KEY (DocumentTypeID) REFERENCES DocumentType(DocumentTypeID)
 );
- 
+```
+
+[:arrow_up:Содержание](#Содержание)
+
+
+### Создание триггеров для бд
+
+Триггер для пересчета суммы заказа при изменении состава заказа
+```MySQL
+DELIMITER //
+CREATE TRIGGER trg_order_total_update
+AFTER INSERT ON OrderItem
+FOR EACH ROW
+BEGIN
+    UPDATE Ordering 
+    SET TotalAmount = (
+        SELECT SUM(Quantity * UnitPrice) 
+        FROM OrderItem 
+        WHERE OrderID = NEW.OrderID
+    )
+    WHERE OrderID = NEW.OrderID;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_order_total_update_on_update
+AFTER UPDATE ON OrderItem
+FOR EACH ROW
+BEGIN
+    UPDATE Ordering 
+    SET TotalAmount = (
+        SELECT SUM(Quantity * UnitPrice) 
+        FROM OrderItem 
+        WHERE OrderID = NEW.OrderID
+    )
+    WHERE OrderID = NEW.OrderID;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_order_total_update_on_delete
+AFTER DELETE ON OrderItem
+FOR EACH ROW
+BEGIN
+    UPDATE Ordering 
+    SET TotalAmount = (
+        SELECT IFNULL(SUM(Quantity * UnitPrice), 0) 
+        FROM OrderItem 
+        WHERE OrderID = OLD.OrderID
+    )
+    WHERE OrderID = OLD.OrderID;
+END//
+DELIMITER ;
+```
+Триггер для проверки уровня запасов
+```MySQL
+DELIMITER //
+CREATE TRIGGER check_stock_levels
+AFTER UPDATE ON Inventory
+FOR EACH ROW
+BEGIN
+    DECLARE min_level INT;
+    DECLARE product_name VARCHAR(255);
+    DECLARE error_message VARCHAR(500);
+    
+    —— Получаем минимальный уровень для товара
+    SELECT MinimumStockLevel, ProductName INTO min_level, product_name
+    FROM Product WHERE ProductID = NEW.ProductID;
+    
+    —— Проверяем, упал ли запас ниже минимального уровня
+    IF NEW.QuantityInStock < min_level THEN
+        —— Здесь можно добавить логирование или уведомление
+        SET error_message = CONCAT('Внимание: Запас товара "', product_name, 
+                                     '" на складе ID ', NEW.WarehouseID, 
+                                     ' ниже минимального уровня! Текущий запас: ', 
+                                     NEW.QuantityInStock, ', минимальный: ', min_level);
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = error_message;
+    
+    END IF;
+END//
+DELIMITER ;
+```
+Триггер для проверки кредитного лимита при создании заказа
+```MySQL
+DELIMITER //
+CREATE TRIGGER trg_check_credit_limit_before_order
+BEFORE INSERT ON Ordering
+FOR EACH ROW
+BEGIN
+    DECLARE customer_credit DECIMAL(15,2);
+    DECLARE customer_debt DECIMAL(15,2);
+    DECLARE new_order_total DECIMAL(15,2);
+    
+    —— Получаем кредитный лимит клиента
+    SELECT CreditLimit INTO customer_credit
+    FROM Customer WHERE CustomerID = NEW.CustomerID;
+    
+    —— Если кредитный лимит не установлен, пропускаем проверку
+    IF customer_credit IS NOT NULL THEN
+        —— Считаем текущую задолженность клиента (сумма неоплаченных счетов)
+        SELECT IFNULL(SUM(i.InvoiceAmount — IFNULL(p.TotalPaid, 0)), 0) INTO customer_debt
+        FROM Invoice i
+        LEFT JOIN (
+            SELECT OrderID, SUM(Amount) AS TotalPaid
+            FROM Payment
+            GROUP BY OrderID
+        ) p ON i.OrderID = p.OrderID
+        WHERE i.OrderID IN (
+            SELECT OrderID FROM Ordering WHERE CustomerID = NEW.CustomerID
+        );
+        
+        —— Проверяем, не превысит ли новый заказ кредитный лимит
+        IF (customer_debt + NEW.TotalAmount) > customer_credit THEN
+            SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Превышен кредитный лимит клиента. Невозможно создать заказ.';
+        END IF;
+    END IF;
+END//
+DELIMITER ;
+```
+Триггер для обновления статуса заказа при полной оплате
+```MySQL
+DELIMITER //
+CREATE TRIGGER trg_update_order_status_after_payment
+AFTER INSERT ON Payment
+FOR EACH ROW
+BEGIN
+    DECLARE total_paid DECIMAL(15,2);
+    DECLARE invoice_amount DECIMAL(15,2);
+    DECLARE current_payment_status INT;
+    DECLARE order_has_credit BIT;
+    
+    —— 1. Проверяем, есть ли у клиента кредитный лимит
+    SELECT 
+        IF(CreditLimit > 0, 1, 0) 
+    INTO 
+        order_has_credit
+    FROM 
+        Customer c
+    JOIN 
+        Ordering o ON c.CustomerID = o.CustomerID
+    WHERE 
+        o.OrderID = NEW.OrderID;
+    
+    —— 2. Получаем сумму счета
+    SELECT 
+        InvoiceAmount
+    INTO 
+        invoice_amount
+    FROM 
+        Invoice
+    WHERE 
+        OrderID = NEW.OrderID
+    LIMIT 1;
+    
+    —— 3. Считаем общую сумму оплат по заказу
+    SELECT 
+        IFNULL(SUM(Amount), 0) 
+    INTO 
+        total_paid
+    FROM 
+        Payment
+    WHERE 
+        OrderID = NEW.OrderID;
+    
+    —— 4. Обновляем только статус оплаты в Invoice (не трогаем статус заказа)
+    IF total_paid >= invoice_amount THEN
+        —— Полная оплата
+        UPDATE Invoice
+        SET InvoiceStatusID = (
+            SELECT StatusID 
+            FROM PaymentStatus 
+            WHERE StatusName = 'Оплачен'
+        )
+        WHERE OrderID = NEW.OrderID;
+        
+    ELSEIF total_paid > 0 AND order_has_credit = 1 THEN
+        —— Для клиентов с кредитом: частичная оплата
+        UPDATE Invoice
+        SET InvoiceStatusID = (
+            SELECT StatusID 
+            FROM PaymentStatus 
+            WHERE StatusName = 'Частично оплачен'
+        )
+        WHERE OrderID = NEW.OrderID;
+        
+    ELSEIF total_paid > 0 THEN
+        —— Для клиентов без кредита: частичная оплата
+        UPDATE Invoice
+        SET InvoiceStatusID = (
+            SELECT StatusID 
+            FROM PaymentStatus 
+            WHERE StatusName = 'Частично оплачен'
+        )
+        WHERE OrderID = NEW.OrderID;
+    END IF;
+END//
+DELIMITER ; 
+```
+
+[:arrow_up:Содержание](#Содержание)
+
+
+### Создание представлений для бд
+
+Клиенты с названиями регионов (запрос 1)
+```MySQL
+CREATE VIEW v_customer_with_region AS
+SELECT 
+    c.CustomerID,
+    c.CustomerName,
+    c.Country,
+    r.RegionName AS Region,
+    c.CreditLimit
+FROM 
+    Customer c
+JOIN 
+    Region r ON c.RegionID = r.RegionID
+ORDER BY 
+    r.RegionName;
+
+Клиенты с просроченными платежами (запрос 2)
+```MySQL
+CREATE VIEW v_customer_debtors AS
+SELECT 
+    c.CustomerID,
+    c.CustomerName,
+    i.InvoiceID,
+    i.InvoiceAmount,
+    i.DueDate,
+    DATEDIFF(CURRENT_DATE, i.DueDate) AS DaysOverdue
+FROM 
+    Customer c
+JOIN 
+    Ordering o ON c.CustomerID = o.CustomerID
+JOIN 
+    Invoice i ON o.OrderID = i.OrderID
+LEFT JOIN 
+    Payment p ON i.OrderID = p.OrderID
+WHERE 
+    i.InvoiceStatusID = (SELECT StatusID FROM PaymentStatus WHERE StatusName LIKE '%Ожидает оплаты%')
+    AND i.DueDate < CURRENT_DATE
+GROUP BY 
+    i.InvoiceID
+HAVING 
+    SUM(IFNULL(p.Amount, 0)) < i.InvoiceAmount;
+```
+Средний чек по регионам (запрос 3)
+```MySQL
+CREATE VIEW v_avg_order_by_region AS
+SELECT 
+    r.RegionID,
+    r.RegionName,
+    COUNT(o.OrderID) AS TotalOrders,
+    AVG(o.TotalAmount) AS AverageOrderAmount,
+    SUM(o.TotalAmount) AS TotalSales
+FROM 
+    Region r
+JOIN 
+    Customer c ON r.RegionID = c.RegionID
+JOIN 
+    Ordering o ON c.CustomerID = o.CustomerID
+GROUP BY 
+    r.RegionID, r.RegionName;
+```
+Товары с низким остатком (запрос 4)
+```MySQL
+CREATE VIEW v_low_stock_products AS
+SELECT 
+    p.ProductID,
+    p.ProductName,
+    i.WarehouseID,
+    w.Address AS WarehouseLocation,
+    i.QuantityInStock,
+    p.MinimumStockLevel,
+    (p.MinimumStockLevel — i.QuantityInStock) AS Deficit
+FROM 
+    Product p
+JOIN 
+    Inventory i ON p.ProductID = i.ProductID
+JOIN 
+    Warehouse w ON i.WarehouseID = w.WarehouseID
+WHERE 
+    i.QuantityInStock < p.MinimumStockLevel
+    AND p.IsActive = 1
+ORDER BY 
+    Deficit DESC;
+```
+Статистика по методам оплаты (запрос 5)
+```MySQL
+CREATE VIEW v_payment_method_stats AS
+SELECT 
+    pm.PaymentMethodID,
+    pm.PaymentMethodName,
+    COUNT(p.PaymentID) AS PaymentCount,
+    SUM(p.Amount) AS TotalAmount,
+    ROUND(COUNT(p.PaymentID) * 100.0 / (SELECT COUNT(*) FROM Payment), 2) AS Percentage
+FROM 
+    PaymentMethod pm
+LEFT JOIN 
+    Payment p ON pm.PaymentMethodID = p.PaymentMethodID
+GROUP BY 
+    pm.PaymentMethodID, pm.PaymentMethodName
+ORDER BY 
+    PaymentCount DESC;
+```
+Рейтинг сотрудников по продажам (запрос 6)
+```MySQL
+CREATE VIEW v_sales_performance AS
+SELECT 
+    e.EmployeeID,
+    CONCAT(e.LastName, ' ', e.FirstName) AS EmployeeName,
+    d.DepartmentName,
+    COUNT(o.OrderID) AS TotalOrders,
+    SUM(o.TotalAmount) AS TotalSales,
+    ROUND(SUM(o.TotalAmount) * e.CommissionRate / 100, 2) AS EstimatedCommission
+FROM 
+    Employee e
+JOIN 
+    Department d ON e.DepartmentID = d.DepartmentID
+JOIN 
+    Ordering o ON e.EmployeeID = o.EmployeeID
+WHERE 
+    e.CommissionRate IS NOT NULL
+GROUP BY 
+    e.EmployeeID, e.LastName, e.FirstName, d.DepartmentName, e.CommissionRate
+ORDER BY 
+    TotalSales DESC;
+```
+Топ товаров по заказам (запрос 7)
+```MySQL
+CREATE VIEW v_top_products AS
+SELECT 
+    p.ProductID,
+    p.ProductName,
+    pc.CategoryName,
+    COUNT(oi.OrderID) AS OrderCount,
+    SUM(oi.Quantity) AS TotalQuantity,
+    SUM(oi.Quantity * oi.UnitPrice) AS TotalRevenue
+FROM 
+    Product p
+JOIN 
+    ProductCategory pc ON p.CategoryID = pc.CategoryID
+JOIN 
+    OrderItem oi ON p.ProductID = oi.ProductID
+JOIN 
+    Ordering o ON oi.OrderID = o.OrderID
+WHERE 
+    p.IsActive = 1
+GROUP BY 
+    p.ProductID, p.ProductName, pc.CategoryName
+ORDER BY 
+    OrderCount DESC
+LIMIT 10;
+```
+Заказы по названию статуса (запрос 8)
+```MySQL
+CREATE VIEW v_orders_with_status AS
+SELECT 
+    o.OrderID,
+    c.CustomerName,
+    os.StatusName,
+    o.OrderDate,
+    o.TotalAmount,
+    s.ShipmentDate,
+    s.EstimatedArrivalDate
+FROM 
+    Ordering o
+JOIN 
+    Customer c ON o.CustomerID = c.CustomerID
+JOIN 
+    OrderStatus os ON o.StatusID = os.StatusID
+LEFT JOIN 
+    Shipment s ON o.OrderID = s.OrderID;
+```
+Остатки товаров по регионам (запрос 9)
+```MySQL
+CREATE VIEW v_region_warehouse_stock AS
+SELECT 
+    r.RegionID,
+    r.RegionName,
+    p.ProductID,
+    p.ProductName,
+    SUM(i.QuantityInStock) AS TotalInStock,
+    w.WarehouseID,
+    w.Address AS WarehouseAddress
+FROM 
+    Region r
+JOIN 
+    Warehouse w ON r.RegionID = w.RegionID
+JOIN 
+    Inventory i ON w.WarehouseID = i.WarehouseID
+JOIN 
+    Product p ON i.ProductID = p.ProductID
+GROUP BY 
+    r.RegionID, r.RegionName, p.ProductID, p.ProductName, w.WarehouseID, w.Address
+ORDER BY 
+    r.RegionName, p.ProductName;
+```
+Количество сотрудников по отделам (запрос 11)
+```MySQL
+CREATE VIEW v_department_staff AS
+SELECT 
+    d.DepartmentID,
+    d.DepartmentName,
+    COUNT(e.EmployeeID) AS EmployeeCount,
+    ROUND(AVG(e.Salary), 2) AS AverageSalary
+FROM 
+    Department d
+LEFT JOIN 
+    Employee e ON d.DepartmentID = e.DepartmentID
+GROUP BY 
+    d.DepartmentID, d.DepartmentName
+ORDER BY 
+    EmployeeCount DESC;
+```
+Клиенты с наибольшим количеством заказов за указанный период (запрос 10)
+```MySQL
+CREATE VIEW v_top_customers_last_quarter AS
+SELECT 
+    c.CustomerID,
+    c.CustomerName,
+    r.RegionName,
+    COUNT(o.OrderID) AS OrderCount,
+    SUM(o.TotalAmount) AS TotalSpent,
+    o.OrderDate
+FROM 
+    Customer c
+JOIN 
+    Region r ON c.RegionID = r.RegionID
+JOIN 
+    Ordering o ON c.CustomerID = o.CustomerID
+GROUP BY 
+    c.CustomerID, c.CustomerName, r.RegionName, o.OrderDate
+ORDER BY 
+    OrderCount DESC
+LIMIT 10;
+Товары, которые заказывают вместе (запрос 12)
+```MySQL
+CREATE VIEW v_related_products AS
+SELECT 
+    main.ProductID AS MainProductID,
+    main.ProductName AS MainProductName,
+    related.ProductID AS RelatedProductID,
+    related.ProductName AS RelatedProductName,
+    COUNT(*) AS TimesOrderedTogether,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM OrderItem WHERE ProductID = main.ProductID), 2) AS AssociationPercentage
+FROM 
+    OrderItem oi1
+JOIN 
+    OrderItem oi2 ON oi1.OrderID = oi2.OrderID AND oi1.ProductID <> oi2.ProductID
+JOIN 
+    Product main ON oi1.ProductID = main.ProductID
+JOIN 
+    Product related ON oi2.ProductID = related.ProductID
+GROUP BY 
+    main.ProductID, main.ProductName, related.ProductID, related.ProductName
+ORDER BY 
+    TimesOrderedTogether DESC
+LIMIT 20;
+```
+
+[:arrow_up:Содержание](#Содержание)
+
+
+### Разграничение прав доступа
+```MySQL
+CREATE USER 'manager_wholesale'@'localhost' IDENTIFIED BY 'securepass123';
+GRANT SELECT ON coursework_db_akbasheva.Ordering TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Customer TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Product TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Region TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Shipment TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Invoice TO 'manager_wholesale'@'localhost';
+
+CREATE USER 'order_specialist'@'localhost' IDENTIFIED BY 'orderpass456';
+GRANT SELECT, INSERT, UPDATE ON coursework_db_akbasheva.Ordering TO 'order_specialist'@'localhost';
+GRANT SELECT, UPDATE ON coursework_db_akbasheva.Customer TO 'order_specialist'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON coursework_db_akbasheva.Contact TO 'order_specialist'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Product TO 'order_specialist'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.OrderStatus TO 'order_specialist'@'localhost';
+GRANT SELECT, INSERT ON coursework_db_akbasheva.OrderItem TO 'order_specialist'@'localhost';
+
+CREATE USER 'customer_service'@'localhost' IDENTIFIED BY 'servicepass789';
+GRANT SELECT ON coursework_db_akbasheva.Customer TO 'customer_service'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Ordering TO 'customer_service'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Shipment TO 'customer_service'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Product TO 'customer_service'@'localhost';
+
+CREATE USER 'warehouse_worker'@'localhost' IDENTIFIED BY 'warehousepass321';
+GRANT SELECT, INSERT, UPDATE ON coursework_db_akbasheva.Inventory TO 'warehouse_worker'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Warehouse TO 'warehouse_worker'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Product TO 'warehouse_worker'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON coursework_db_akbasheva.Shipment TO 'warehouse_worker'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.Ordering TO 'warehouse_worker'@'localhost';
+
+CREATE USER 'accountant'@'localhost' IDENTIFIED BY 'accountpass654';
+GRANT SELECT, INSERT, UPDATE ON coursework_db_akbasheva.Invoice TO 'accountant'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON coursework_db_akbasheva.Payment TO 'accountant'@'localhost';
+GRANT SELECT, UPDATE ON coursework_db_akbasheva.Customer TO 'accountant'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON coursework_db_akbasheva.LegalDetails TO 'accountant'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON coursework_db_akbasheva.BankAccount TO 'accountant'@'localhost';
+
+CREATE USER 'sysadmin'@'localhost' IDENTIFIED BY 'adminpass987';
+GRANT ALL PRIVILEGES ON coursework_db_akbasheva.* TO 'sysadmin'@'localhost';
+GRANT CREATE USER, GRANT OPTION ON *.* TO 'sysadmin'@'localhost';
+
+GRANT SELECT ON coursework_db_akbasheva.v_top_customers_last_quarter TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_avg_order_by_region TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_sales_performance TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_payment_method_stats TO 'manager_wholesale'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_region_warehouse_stock TO 'manager_wholesale'@'localhost';
+
+GRANT SELECT ON coursework_db_akbasheva.v_orders_with_status TO 'order_specialist'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_low_stock_products TO 'order_specialist'@'localhost';
+
+GRANT SELECT ON coursework_db_akbasheva.v_customer_with_region TO 'customer_service'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_orders_with_status TO 'customer_service'@'localhost';
+
+GRANT SELECT ON coursework_db_akbasheva.v_low_stock_products TO 'warehouse_worker'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_region_warehouse_stock TO 'warehouse_worker'@'localhost';
+
+GRANT SELECT ON coursework_db_akbasheva.v_payment_method_stats TO 'accountant'@'localhost';
+GRANT SELECT ON coursework_db_akbasheva.v_customer_debtors TO 'accountant'@'localhost';
+```
+
+[:arrow_up:Содержание](#Содержание)
+
+____
+
