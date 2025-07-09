@@ -920,3 +920,63 @@ GRANT SELECT ON coursework_db_akbasheva.v_customer_debtors TO 'accountant'@'loca
 
 ____
 
+## Руководство пользователя
+
+При запуске приложения пользователь должен ввести логин и пароль.
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/b74b3525-771e-47cc-b66c-277470c0167d" alt="image" style="width:60%; height:auto;">
+</p>
+
+Если логин и/или пароль не совпадут, то появится соответсвующее сообщение об ошибке.
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/259c12c8-6a11-489d-9cb5-a69526a68022" alt="image" style="width:60%; height:auto;">
+</p>
+
+Если были введены правильные логин и пароль, то перед пользователем открывается новое окно. В этом окне можно выбрать необходимую таблицу или представление. 
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/a712fdbb-c581-4624-9ae8-da3b46694d15" alt="image" style="width:60%; height:auto;">
+</p>
+
+Если у пользователя есть необходимый уровень прав, то он сможет редактировать таблицу,
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/a5b1b196-46d6-4e14-9d75-75083be0c3e1" alt="image" style="width:60%; height:auto;">
+</p>
+
+иначе – только просматривать.
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/d54eb9a6-feff-464d-aa11-6d41240bcbe7" alt="image" style="width:60%; height:auto;">
+</p>
+
+Если при редактировании таблицы пользователь введет некорректные данные, то приложение оповестит его об этом и не позволит сохранить изменения.
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/6837b7d5-3c68-4a4d-bd90-3279e2d501e3" alt="image" style="width:60%; height:auto;">
+</p>
+
+Каждому пользователю показываются только те таблицы и представления, к которым у него есть доступ. Например, специалист отдела приема заказов может взаимодействовать с таблицами и представлениями, которые связаны с заказами, но не может видеть таблицы, связанные со счетами клиентов, в отличие от бухгалтера.
+
+Запросы позволяют получить определенные данные.
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/06b4d605-7216-4cde-8d32-b299b4b1f0e8" alt="image" style="width:60%; height:auto;">
+</p>
+
+При необходимости можно открыть дополнительное окно.
+<p align="center">
+<img src="https://github.com/user-attachments/assets/f992ec22-feb6-4e30-bf59-ed7e03586dc7" alt="image" style="width:60%; height:auto;">
+</p>
+
+Завершить работу приложения можно, нажав на соответствующие кнопки.
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/7bc1b462-6ca3-4b36-8ae1-b9f3bbe5a7d9" alt="image" style="width:60%; height:auto;">
+</p>
+
+[:arrow_up:Содержание](#Содержание)
+
+____
